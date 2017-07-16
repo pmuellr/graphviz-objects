@@ -5,7 +5,7 @@
 const utils = require('../lib/utils')
 const gvo = require('../..')
 
-const g = gvo.createGraph('G', { digraph: true })
+const g = gvo.createDigraph('G')
 
 const cluster0 = g.addSubgraph('cluster_0', {
   style: 'filled',

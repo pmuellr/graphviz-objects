@@ -7,4 +7,6 @@ require('./crazy')
 require('./datastruct')
 require('./fsm')
 require('./Genetic_Programming')
+require('./lion_share')
+
 require('./gradient-table')

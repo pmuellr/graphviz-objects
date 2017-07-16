@@ -5,7 +5,7 @@
 const utils = require('../lib/utils')
 const gvo = require('../..')
 
-const g = gvo.createGraph('finite_state_machine', { digraph: true }, {
+const g = gvo.createDigraph('finite_state_machine', {
   rankdir: 'LR',
   size: '8,5'
 })

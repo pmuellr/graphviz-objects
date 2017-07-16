@@ -5,7 +5,7 @@
 const utils = require('../lib/utils')
 const gvo = require('../..')
 
-const g = gvo.createGraph('G', { digraph: true }, {
+const g = gvo.createDigraph('G', {
   bgcolor: 'yellow:red'
 })
 
