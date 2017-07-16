@@ -52,7 +52,7 @@ class NamedObject {
 }
 
 class Graph extends NamedObject {
-  constructor (name, attrs, options) {
+  constructor (name, options, attrs) {
     super(name, attrs)
 
     if (options == null) options = {}
@@ -123,7 +123,7 @@ class Graph extends NamedObject {
 
 class Subgraph extends Graph {
   constructor (name, attrs) {
-    super(name, attrs)
+    super(name, {}, attrs)
     this._type = 'subgraph'
   }
 
@@ -183,7 +183,9 @@ class Edge extends NamedObject {
     if (opts == null) opts = {}
 
     const op = opts.digraph ? '->' : '--'
-    addLine(lines, `${toID(this.source.name)} ${op} ${toID(this.target.name)} [`, opts.indent)
+    let line = `${toID(this.source.name)} ${op} ${toID(this.target.name)}`
+    if (this.hasAttrs) line = `${line} [`
+    addLine(lines, line, opts.indent)
 
     opts.indent++
     for (let name in this.attrs) {
@@ -192,7 +194,7 @@ class Edge extends NamedObject {
     }
     opts.indent--
 
-    addLine(lines, `]`, opts.indent)
+    if (this.hasAttrs) addLine(lines, `]`, opts.indent)
   }
 }
 

@@ -14,6 +14,8 @@ const viz = require('viz.js')
 
 function dotToDOTfile (name, dot) {
   const fileName = path.join(TmpPath, `${name}.dot`)
+  const dirName = path.dirname(fileName)
+  if (!fs.existsSync(dirName)) fs.mkdirSync(dirName)
   fs.writeFileSync(fileName, dot)
   console.log(`generated file: ${fileName}`)
 }
@@ -21,6 +23,8 @@ function dotToDOTfile (name, dot) {
 function dotToSVGfile (name, dot) {
   const svg = viz(dot)
   const fileName = path.join(TmpPath, `${name}.svg`)
+  const dirName = path.dirname(fileName)
+  if (!fs.existsSync(dirName)) fs.mkdirSync(dirName)
   fs.writeFileSync(fileName, svg)
   console.log(`generated file: ${fileName}`)
 }

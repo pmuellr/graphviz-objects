@@ -8,11 +8,9 @@ const runTest = utils.createTestRunner(__filename)
 
 // Check the package name.
 runTest(function basic (t) {
-  const opts = { digraph: true }
-
-  const g = gvo.createGraph('main_graph', {
+  const g = gvo.createGraph('main_graph', { digraph: true }, {
     rank: 'LR'
-  }, opts)
+  })
 
   const sg = g.addSubgraph('subgraph_a', {
     rank: 'TB'
