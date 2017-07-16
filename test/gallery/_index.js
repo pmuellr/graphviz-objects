@@ -5,3 +5,6 @@
 require('./cluster')
 require('./crazy')
 require('./datastruct')
+require('./fsm')
+require('./Genetic_Programming')
+require('./gradient-table')
