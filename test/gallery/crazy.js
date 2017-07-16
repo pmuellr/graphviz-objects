@@ -23,12 +23,10 @@ const nodeAttrs = {
   fontname: 'Helvetica-Outline'
 }
 
-const nodes = {}
+g.addNode('5th Edition', Object.assign({}, nodeAttrs, { sides: 9, distortion: 0.936354, orientation: 28, skew: -0.126818, color: 'salmon2' }))
+g.addNode('6th Edition', Object.assign({}, nodeAttrs, { sides: 5, distortion: 0.238792, orientation: 11, skew: 0.995935, color: 'deepskyblue' }))
 
-nodes['5th Edition'] = g.addNode('5th Edition', Object.assign({}, nodeAttrs, { sides: 9, distortion: 0.936354, orientation: 28, skew: -0.126818, color: 'salmon2' }))
-nodes['6th Edition'] = g.addNode('6th Edition', Object.assign({}, nodeAttrs, { sides: 5, distortion: 0.238792, orientation: 11, skew: 0.995935, color: 'deepskyblue' }))
-
-g.addEdge(nodes['5th Edition'], nodes['6th Edition'])
+g.addEdge('5th Edition', '6th Edition')
 
 const lines = g.render()
 

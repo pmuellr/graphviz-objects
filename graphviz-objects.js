@@ -163,9 +163,6 @@ class Edge extends NamedObject {
     if (source == null) throw new Error(`source must not be null`)
     if (target == null) throw new Error('target must not be null')
 
-    if (!source.isValidEdgeNode) throw new Error(`source is not valid: ${source}`)
-    if (!target.isValidEdgeNode) throw new Error(`target is not valid: ${source}`)
-
     this._type = 'edge'
     this._source = source
     this._target = target
@@ -183,7 +180,7 @@ class Edge extends NamedObject {
     if (opts == null) opts = {}
 
     const op = opts.digraph ? '->' : '--'
-    let line = `${toID(this.source.name)} ${op} ${toID(this.target.name)}`
+    let line = `${this.source} ${op} ${this.target}`
     if (this.hasAttrs) line = `${line} [`
     addLine(lines, line, opts.indent)
 
