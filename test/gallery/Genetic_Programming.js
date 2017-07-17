@@ -6,7 +6,6 @@ const utils = require('../lib/utils')
 const gvo = require('../..')
 
 const g = gvo.createGraph('', {
-  fontsize: 8,
   label: '((+ (* (X) (- (- (X) (X)) (X))) (% (+ (X) (X)) (COS (- (X) (X))))) (EXP (* (X) (X))) (+ (% (EXP (SIN (+ (X) (X)))) (SIN (* (X) (EXP (* (X) (X)))))) (* (X) (X))) (% (EXP (% (X) (% (X) (X)))) (EXP (SIN (X)))))'
 })
 

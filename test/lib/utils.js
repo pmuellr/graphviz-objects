@@ -21,9 +21,10 @@ function dotToDOTfile (name, dot) {
   console.log(`generated file: ${fileName}`)
 }
 
-function dotToSVGfile (name, dot) {
-  const svg = viz(dot)
-  const fileName = path.join(TmpPath, `${name}.svg`)
+function dotToSVGfile (name, dot, layout) {
+  if (layout == null) layout = 'dot'
+  const svg = viz(dot, {engine: layout})
+  const fileName = path.join(TmpPath, `${name}.gv.svg`)
   mkdirp.sync(path.dirname(fileName))
   fs.writeFileSync(fileName, svg)
   console.log(`generated file: ${fileName}`)
