@@ -1,22 +1,83 @@
 graphviz-objects - create graphviz documents via an API
 ================================================================================
 
-`graphviz-objects` is a library that creates [GraphViz][] `.dot` file content
-via JavaScript APIs.  Aren't you tired of generating those `.dot` files
-manually?  You can use this library and the awesome [viz.js][] package
-to create GraphViz images right from JavaScript, without having to have
-the GraphViz executables installed.
+`graphviz-objects` is a library that creates readable [Graphviz][] `dot` format
+text via JavaScript APIs.  Aren't you tired of generating that [`dot` format
+text][dot] manually?  You can use this library and the awesome [viz.js][]
+package to create Graphviz images right from JavaScript, without having to have
+any native Graphviz executables installed.
 
-[GraphViz]: http://www.graphviz.org/
+[Graphviz]: http://www.graphviz.org/
+[dot]: http://www.graphviz.org/content/dot-language
 [viz.js]: https://www.npmjs.com/package/viz.js
+
+As an example, here's a program from the `test/gallery` directory,
+[`cluster.js`][cluster.js], which will render the
+["cluster" sample from the Graphviz Gallery][cluster-gallery].
+
+```js
+const gvo = require('graphviz-objects')
+
+const g = gvo.createDigraph('G')
+
+const cluster0 = g.addSubgraph('cluster_0', {
+  style: 'filled',
+  color: 'lightgrey',
+  label: 'process #1'
+})
+
+const cluster0Attrs = { style: 'filled', color: 'white' }
+
+cluster0.addNode('a0', cluster0Attrs)
+cluster0.addNode('a1', cluster0Attrs)
+cluster0.addNode('a2', cluster0Attrs)
+cluster0.addNode('a3', cluster0Attrs)
+
+cluster0.addEdge('a0', 'a1')
+cluster0.addEdge('a1', 'a2')
+cluster0.addEdge('a2', 'a3')
+
+const cluster1 = g.addSubgraph('cluster_1', {color: 'blue', label: 'process #2'})
+
+const cluster1Attrs = { style: 'filled' }
+
+cluster1.addNode('b0', cluster1Attrs)
+cluster1.addNode('b1', cluster1Attrs)
+cluster1.addNode('b2', cluster1Attrs)
+cluster1.addNode('b3', cluster1Attrs)
+
+cluster1.addEdge('b0', 'b1')
+cluster1.addEdge('b1', 'b2')
+cluster1.addEdge('b2', 'b3')
+
+g.addNode('start', { shape: 'Mdiamond' })
+g.addNode('end', { shape: 'Msquare' })
+
+g.addEdge('start', 'a0')
+g.addEdge('start', 'b0')
+g.addEdge('a1', 'b3')
+g.addEdge('b2', 'a3')
+g.addEdge('a3', 'a0')
+g.addEdge('a3', 'end')
+g.addEdge('b3', 'end')
+
+const lines = g.render()
+```
+
+[cluster.js]: https://github.com/pmuellr/graphviz-objects/blob/master/test/gallery/cluster.js
+
+[cluster-gallery]: http://www.graphviz.org/content/cluster
 
 
 usage
 ================================================================================
 
-This package should ease the creation of GraphViz dot content, compared to doing
-it by hand.  But it won't make it easier to use GraphViz itself.  If you're not
-already familiar with GraphViz, you should check out their
+This package should ease the creation of Graphviz dot content, compared to doing
+it by hand.  But it won't really make it easier to construct your graphs -
+you will have to be familiar with [Graphviz `dot`][dot] language constructs
+to use this library.
+
+If you're not already familiar with Graphviz, you should check out their
 [documentation page][gv-doc] and the [gallery page][gv-gallery] for examples.
 Some of the gallery samples are reimplemented with this library in the
 `test/gallery` directory.
@@ -26,10 +87,10 @@ Some of the gallery samples are reimplemented with this library in the
 
 One piece of functionality not supported by this library is the ability to set
 default attributes for `node`, `edge`, and `graph` objects via the respective
-statements.  Current thinking is that this isn't needed, since you can get the
-same effect by storing default values in a JavaScript variable and making use
-of that.  Some of the samples in the `test/gallery` directory use the following
-pattern of applying default attributes:
+attribute statements.  Current thinking is that this isn't needed, since you can
+get the same effect by storing default values in a JavaScript variable and
+making use of that.  Some of the samples in the `test/gallery` directory use the
+following pattern of applying default attributes:
 
 ```js
 const gvo = require('graphviz-objects')
@@ -60,12 +121,19 @@ install
 api
 ================================================================================
 
-The exports of the `graphviz-objects` package are described below.
+The exports of the `graphviz-objects` package, and the API of the objects
+returned by those functions, are described below.
 
 Many functions in the API take `name` and optional `attrs` parameters.  Name is
 the `name` of the object being created, and `attrs` is a JavaScript object with
 the attributes of the object.
 
+The `attrs` parameter object will be used to create attribute lists.  The
+property names in the object are [Graphviz attribute names][gv-attrs]. The
+property values can be numbers or strings, or objects returned by the
+`htmlString()` API (described below) which creates HTML-like label attributes.
+
+[gv-attrs]: http://www.graphviz.org/content/attrs
 
 properties
 --------------------------------------------------------------------------------
@@ -80,7 +148,7 @@ functions
 
 ### `createGraph(name[, attrs])`
 
-Creates a top-level graph with the specified name and attributes.
+Returns a newly created top-level graph with the specified name and attributes.
 
 Example:
 
@@ -95,7 +163,7 @@ const g = gvo.createGraph('ER', {
 
 ### `createDigraph(name[, attrs])`
 
-Creates a top-level digraph with the specified name and attributes.
+Returns a newly created top-level digraph with the specified name and attributes.
 
 Example:
 
@@ -114,7 +182,7 @@ const g = gvo.createDigraph('unix', {
 
 Creates an HTML string to be used as an attribute value.
 
-See [HTML-Like Labels][] in the GraphViz documentation for more information on
+See [HTML-Like Labels][] in the Graphviz documentation for more information on
 using these.
 
 [HTML-Like Labels]: http://www.graphviz.org/content/node-shapes#html
@@ -149,13 +217,13 @@ g.addNode('a0', {
 graph objects
 --------------------------------------------------------------------------------
 
-Graph objects created from the `createGraph()` and `createDigraph()` functions
+Graph objects returned from the `createGraph()` and `createDigraph()` functions
 support the following methods:
 
 ### `addSubgraph(name[, attrs])`
 
-Creates a new subgraph object, which supports all the graph object methods,
-except the `render()` method.
+Returns a newly created subgraph object, which supports all the graph object
+methods, except the `render()` method.
 
 Example:
 
