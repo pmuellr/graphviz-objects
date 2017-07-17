@@ -209,8 +209,8 @@ class Edge extends TypedAttrObject {
     this._source = `${source}`
     this._target = `${target}`
 
-    this._sourcePort = `${sourcePort}`
-    this._targetPort = `${targetPort}`
+    this._sourcePort = sourcePort == null ? null : `${sourcePort}`
+    this._targetPort = targetPort == null ? null : `${targetPort}`
   }
 
   get source () {
