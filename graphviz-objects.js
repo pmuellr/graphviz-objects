@@ -264,7 +264,7 @@ class IndentingWriter {
   }
 
   write (line) {
-    line = `${getIndentation(this._indent)}${line}`
+    if (line !== '') line = `${getIndentation(this._indent)}${line}`
     this._lines.push(line)
   }
 
